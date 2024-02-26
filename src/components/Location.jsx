@@ -1,10 +1,29 @@
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addResults } from '../shared/store/modules/list';
+import * as S from '../styles/common';
+import { useNavigate } from 'react-router';
+import { connection } from '../shared/store/modules/listConnection';
 
 const Location = () => {
+  const navigate = useNavigate();
+
+  //검색기능
+  const search = useSelector((state) => state.search);
+  console.log(search);
+
+  //카드 리스트 연결
+  const selector = useSelector((state) => state.connection);
+  console.log(selector);
+
+  const dispatch = useDispatch();
+
+  const [isClick, setIsClick] = useState(false);
   const [info, setInfo] = useState();
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
+
   const [location, setLocation] = useState({
     center: {
       lat: 37.566826,
@@ -45,6 +64,8 @@ const Location = () => {
       '카페',
       (data, status) => {
         console.log('카페 검색 결과:', data);
+        dispatch(addResults(data));
+
         if (status === window.kakao.maps.services.Status.OK) {
           const bounds = new window.kakao.maps.LatLngBounds();
           let newMarkers = [];
@@ -55,7 +76,10 @@ const Location = () => {
                 lat: data[i].y,
                 lng: data[i].x
               },
-              content: data[i].place_name
+              content: data[i].place_name,
+              address: data[i].address_name,
+              id: data[i].id,
+              phone: data[i].phone
             });
             bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
           }
@@ -72,6 +96,7 @@ const Location = () => {
     );
   }, [map, location.center.lat, location.center.lng]);
 
+  //지도 드래그시 마크 변경
   const handleDragEnd = () => {
     const center = map.getCenter();
     setLocation({
@@ -79,23 +104,57 @@ const Location = () => {
     });
   };
 
+  const handleClickEvent = () => {
+    setIsClick(false);
+    dispatch(connection(false));
+  };
+
+  const handleMarkerClickEvent = (marker) => {
+    setIsClick(true);
+    setInfo(marker);
+  };
+
   return (
-    <Map
-      center={location.center}
-      style={{
-        width: '100%',
-        height: '100vh'
-      }}
-      level={3}
-      onCreate={setMap}
-      onDragEnd={handleDragEnd}
-    >
-      {markers.map((marker, index) => (
-        <MapMarker key={`marker-${index}`} position={marker.position} onClick={() => setInfo(marker)}>
-          {info && info.content === marker.content && <div style={{ color: '#000' }}>{marker.content}</div>}
-        </MapMarker>
-      ))}
-    </Map>
+    <S.MapWrapper>
+      <Map
+        center={location.center}
+        style={{
+          width: '100%',
+          height: '100vh'
+        }}
+        level={3}
+        onCreate={setMap}
+        onDragEnd={handleDragEnd}
+        onClick={handleClickEvent}
+      >
+        {markers.map((marker) => (
+          <CustomOverlayMap key={`marker-${marker.id}`} position={marker.position}>
+            <MapMarker
+              position={marker.position}
+              onClick={() => {
+                handleMarkerClickEvent(marker);
+              }}
+            >
+              {(selector.isClick && selector.id === marker.id) || (isClick && info.content === marker.content) ? (
+                <S.MapMarkerStyle>
+                  <h2>{marker.content}</h2>
+                  <p>{marker.address}</p>
+                  <div>
+                    <button
+                      onClick={() => {
+                        navigate(`/detail/${marker.id}`);
+                      }}
+                    >
+                      더보기
+                    </button>
+                  </div>
+                </S.MapMarkerStyle>
+              ) : null}
+            </MapMarker>
+          </CustomOverlayMap>
+        ))}
+      </Map>
+    </S.MapWrapper>
   );
 };
 
