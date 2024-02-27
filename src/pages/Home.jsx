@@ -1,3 +1,4 @@
+import SearchList from '../components/SearchList';
 import Location from '../components/Location';
 import Search from '../components/Search';
 
@@ -6,6 +7,7 @@ const Home = () => {
     <>
       <Location />
       <Search />
+      <SearchList />
     </>
   );
 };

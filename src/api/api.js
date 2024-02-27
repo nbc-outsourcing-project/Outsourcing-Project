@@ -13,8 +13,8 @@ export const apiClient = axios.create({
 });
 
 //api목록 가져오기
-export const getTodos = async () => {
-  const { data } = await apiClient.get('/');
+export const getTodos = async (query) => {
+  const { data } = await apiClient.get('/cafes', { params: { query } });
   return data;
 };
 
