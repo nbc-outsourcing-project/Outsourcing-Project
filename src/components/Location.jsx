@@ -88,7 +88,7 @@ const Location = () => {
           setMarkers(newMarkers);
           map.setBounds(bounds);
           console.log('설정된 마커:', newMarkers);
-        }
+        } 
       },
       { category_group_code: 'CE7', location: new window.kakao.maps.LatLng(location.lat, location.lng), radius: 1000 }
     );

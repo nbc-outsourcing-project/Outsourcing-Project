@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeSearchText } from '../shared/store/modules/search';
-import { useSearchParams } from 'react-router-dom';
 import * as S from '../styles/common';
 import { connection } from '../shared/store/modules/listConnection';
 
@@ -9,7 +8,7 @@ const Search = () => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();
 
   // const keyword = searchParams.get('keyword');
   // console.log(keyword);
