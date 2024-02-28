@@ -17,8 +17,6 @@ const Search = () => {
 
   const searchResults = useSelector((state) => state.search.searchResults);
 
-  const { kakao } = window;
-
   const handleKeywordChange = (e) => {
     dispatch(changeSearchText(e.target.value));
   };
