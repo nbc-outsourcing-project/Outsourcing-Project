@@ -7,6 +7,9 @@ export const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
+    setTodos: (state, action) => {
+      return action.payload;
+    },
     // actionCreator + reducer
     addTodo: (state, action) => {
       // 추가하기
@@ -29,5 +32,5 @@ export const todoSlice = createSlice({
   }
 });
 
-export const { addTodo, removeTodo, switchTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, switchTodo, setTodos } = todoSlice.actions;
 export default todoSlice.reducer;

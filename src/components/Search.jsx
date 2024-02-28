@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getTodos } from '../api/api';
-import { addTodo } from '../shared/store/modules/test';
+import { setTodos } from '../shared/store/modules/test'; // Removed addTodo since it seems not used
 import SearchList from './SearchList';
 
 const Search = () => {
@@ -12,6 +12,8 @@ const Search = () => {
     try {
       const cafes = await getTodos(query);
       console.log('Cafe Information:', cafes);
+
+      dispatch(setTodos(cafes));
     } catch (error) {
       console.error('Error fetching cafe information:', error);
     }
@@ -20,8 +22,7 @@ const Search = () => {
   return (
     <div>
       <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="카페 검색" />
-      <button onClick={handleSearch}>검색</button>
-
+      <button onClick={() => handleSearch(searchQuery)}>검색</button>
       <SearchList />
     </div>
   );

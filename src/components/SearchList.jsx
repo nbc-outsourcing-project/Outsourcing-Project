@@ -10,7 +10,10 @@ const SearchList = () => {
       <ul>
         {cafes.map((cafe) => (
           <li key={cafe.id}>
-            {cafe.name} - 위치: {cafe.location}
+            <strong>{cafe.place_name}</strong>
+            <p>주소: {cafe.address_name}</p>
+            <p>도로명 주소: {cafe.road_address_name}</p>
+            <p>전화번호: {cafe.phone}</p>
           </li>
         ))}
       </ul>
