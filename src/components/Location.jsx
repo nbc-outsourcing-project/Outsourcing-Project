@@ -13,13 +13,9 @@ const Location = () => {
   // console.log('searchResults', searchResults);
 
   //검색기능
-  const search = useSelector((state) => state.search);
 
   const location = useSelector((state) => state.search.location);
   const searchText = useSelector((state) => state.search.searchText);
-  const totalCafeList = useSelector((state) => state.search);
-
-  const [selectedPlace, setSelectedPlace] = useState([]);
   const [infoState, setInfoState] = useState(); // 상태명 변경
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
@@ -89,13 +85,8 @@ const Location = () => {
 
           setMarkers(newMarkers);
           map.setBounds(bounds);
-<<<<<<< HEAD
-          console.log('설정된 마커:', newMarkers);
-        } 
-=======
           // console.log('설정된 마커:', newMarkers);
         }
->>>>>>> 5d53e4cdf0f38b332869bae5bcbeb71f13b8fc39
       },
       { category_group_code: 'CE7', location: new window.kakao.maps.LatLng(location.lat, location.lng), radius: 1000 }
     );

@@ -9,10 +9,6 @@ const Search = () => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
-  // const [searchParams, setSearchParams] = useSearchParams();
-
-  // const keyword = searchParams.get('keyword');
-  // console.log(keyword);
 
   const searchText = useSelector((state) => state.search.searchText);
   const searchResults = useSelector((state) => state.search.searchResults);
